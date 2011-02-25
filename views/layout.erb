@@ -8,11 +8,11 @@
   <% unless flash[:error].nil? %><div id="flash_error"><%=flash[:error]%></div><% end %>
   <% unless flash[:notice].nil? %><div id="flash_notice"><%=flash[:notice]%></div><% end %>
   <ul id="nav">
-    <li><a href="/">list</a></li>
     <li><a href="/s/new">new schedule</a></li>
   </ul>
   <div id="content">
 	  <%= yield %>
+	  <p><small><a href="/">show all</a></small></p>
   </div>
 </body>
 </html>

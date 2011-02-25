@@ -47,11 +47,22 @@ class Schedule
 		new_from_slugs DB.lrange("#{App.db_base_key}:tagged:#{tag}", 0, 99999)
 	end
 
-
+	def self.find_range(start, len, by_rank=false)
+	  if by_rank
+	    new_from_slugs DB.zrevrange(ranked_key, start, start + len - 1)
+	  else
+		  new_from_slugs DB.lrange(chrono_key, start, start + len - 1)
+		end
+	end
+	
 #################
 
+  def self.all_by_rank
+    find_range(0,9999,true)
+  end
+
   def self.all
-    new_from_slugs(DB.zrange("#{App.db_base_key}:sorted", 0, -1))
+    find_range(0,9999)
   end
 
   def self.create(params)
@@ -66,8 +77,8 @@ class Schedule
   end
 
   def create_indexes
-    DB.zadd("#{App.db_base_key}:ranked", 0, slug)
-    DB.lpush("#{App.db_base_key}:chrono", slug)
+    DB.zadd(ranked_key, 0, slug)
+    DB.lpush(chrono_key, slug)
 
 		tags.split.each do |tag|
 			DB.lpush("#{App.db_base_key}:tagged:#{tag}", slug)
@@ -78,7 +89,7 @@ class Schedule
 
 	def self.make_slug(body)
 	  # TODO
-    body.hash
+    body.hash.abs
 	end
 
   def self.db_key_for_slug(slug)
@@ -89,9 +100,21 @@ class Schedule
 		self.class.db_key_for_slug(slug)
 	end
 
+  def self.ranked_key
+    "#{App.db_base_key}:ranked"
+  end
+  def self.chrono_key
+    "#{App.db_base_key}:chrono"
+  end
 ##################
   
   def url
     "/s/#{slug}/"
   end
+  
+	def linked_tags
+		tags.split.inject([]) do |accum, tag|
+			accum << "<a href=\"/s/tags/#{tag}\">#{tag}</a>"
+		end.join(" ")
+	end
 end
