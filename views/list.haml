@@ -2,7 +2,13 @@
   %small
     =schedule.linked_tags
   %p
-    =schedule.body
+    Distance
+    = schedule.full_distance
+    %br
+    %small
+      with
+      = schedule.items
+      = pluralize(schedule.items, 'Item')
   %p
     %a(href="#{schedule.url}")more
 

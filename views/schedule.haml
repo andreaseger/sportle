@@ -1,5 +1,11 @@
 %strong
   =schedule.linked_tags
-%p
-  =schedule.body
-
+%small
+  = "#{schedule.full_distance}m"
+  with
+  = schedule.items
+  = pluralize(schedule.items, 'Item')
+%ul.items
+  -for item in items
+    %li{:class=>"level#{item.level}"}
+      =h item.text

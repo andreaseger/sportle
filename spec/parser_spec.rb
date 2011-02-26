@@ -1,45 +1,53 @@
 describe Parser do
   context 'when parseSchedule' do
-    it "should return the schedules full distance" do
-      schedule = "200m einschwimmen\n2x200m Lagen\n4x100m Kraul\n  50m Ruecken\n300m ausschwimmen"
-      Parser.parseSchedule(schedule)[:full_distance].should == 1500
+    context "#full_distance" do
+      it "should return the schedules full distance" do
+        schedule = "200m einschwimmen\n2x200m Lagen\n4x100m Kraul\n  50m Ruecken\n300m ausschwimmen"
+        Parser.parseSchedule(schedule)[:full_distance].should == 1500
+      end
+      it "should work with another schedule" do
+        schedule = "400m einschwimmen\n2x200m Lagen\r\n4x100m Kraul\n  50m Ruecken\r\n300m ausschwimmen"
+        Parser.parseSchedule(schedule)[:full_distance].should == 1700
+      end      
     end
-    it "should work with another schedule" do
-      schedule = "400m einschwimmen\n2x200m Lagen\r\n4x100m Kraul\n  50m Ruecken\r\n300m ausschwimmen"
-      Parser.parseSchedule(schedule)[:full_distance].should == 1700
-    end
-    it "should return the number of real - non info - items" do
-      schedule = "400m einschwimmen\n2x200m Lagen\r\n4x100m Kraul\n  50m Ruecken\r\n300m ausschwimmen"
-      Parser.parseSchedule(schedule)[:items].should == 5
-    end
-    it "should return the number of real - non info - items" do
-      schedule = "400m einschwimmen\n  50m Ruecken\r\n300m ausschwimmen"
-      Parser.parseSchedule(schedule)[:items].should == 3
+    context "#items" do
+      it "should return the number of real - non info - items" do
+        schedule = "400m einschwimmen\n2x200m Lagen\r\n4x100m Kraul\n  50m Ruecken\r\n300m ausschwimmen"
+        Parser.parseSchedule(schedule)[:items].should == 5
+      end
+      it "should return the number of real - non info - items" do
+        schedule = "400m einschwimmen\n  50m Ruecken\r\n300m ausschwimmen"
+        Parser.parseSchedule(schedule)[:items].should == 3
+      end
+      it "should return the number of real - non info - items" do
+        schedule = "400m einschwimmen\n  50m Ruecken\n-blas\n300m ausschwimmen"
+        Parser.parseSchedule(schedule)[:items].should == 3
+      end
     end
   end
   context "when parseItem" do
     context "when itemlevel is 0" do
       it "should find the distance" do
-        item = Item.new(:full_text => "200m Lagen", :outer => nil, :inner => nil, :distance => 200, :level => 0)
-        Parser.parseItem(item.full_text).should == item
+        item = Item.new(:text => "200m Lagen", :outer => nil, :inner => nil, :distance => 200, :level => 0)
+        Parser.parseItem(item.text).should == item
       end
       it "should find the first multiplicator" do
-        item = Item.new(:full_text => "2x200m Lagen", :outer => 2, :inner => nil, :distance => 200, :level => 0)
-        Parser.parseItem(item.full_text).should == item
+        item = Item.new(:text => "2x200m Lagen", :outer => 2, :inner => nil, :distance => 200, :level => 0)
+        Parser.parseItem(item.text).should == item
       end
       it "should find both multiplicators" do
-        item = Item.new(:full_text => "2x5x200m Lagen", :outer => 2, :inner => 5, :distance => 200, :level => 0)
-        Parser.parseItem(item.full_text).should == item
+        item = Item.new(:text => "2x5x200m Lagen", :outer => 2, :inner => 5, :distance => 200, :level => 0)
+        Parser.parseItem(item.text).should == item
       end
     end
     context "when itemlevel is 1" do
       it "should find the distance" do
-        item = Item.new(:full_text => "  200m Lagen", :outer => nil, :inner => nil, :distance => 200, :level => 1)
-        Parser.parseItem(item.full_text).should == item
+        item = Item.new(:text => "  200m Lagen", :outer => nil, :inner => nil, :distance => 200, :level => 1)
+        Parser.parseItem(item.text).should == item
       end
       it "should find the first multiplicator" do
-        item = Item.new(:full_text => "  2x200m Lagen", :outer => nil, :inner => 2, :distance => 200, :level => 1)
-        Parser.parseItem(item.full_text).should == item
+        item = Item.new(:text => "  2x200m Lagen", :outer => nil, :inner => 2, :distance => 200, :level => 1)
+        Parser.parseItem(item.text).should == item
       end
     end
   end
@@ -48,9 +56,9 @@ describe Parser do
       @i1 = Item.new(:level => 0, :distance => 400)
       @i2 = Item.new(:level => 0, :outer => 2, :distance => 800)
       @i3 = Item.new(:level => 0, :outer => 3, :distance => 500)
-      @i4 = Item.new(:distance => 50, :level => 1)
+      @i4 = Item.new(:level => 1, :distance => 50)
       @i5 = Item.new(:level => 0, :inner => 5, :outer => 3, :distance => 100)
-      @i6 = Item.new(:distance => 50, :level => 2)
+      @i6 = Item.new(:level => 2, :distance => 50)
       @i7 = Item.new(:inner => 2, :distance => 50, :level => 1)
     end
     

@@ -1,14 +1,19 @@
 class Parser
-  def self.parseSchedule(full)
-    tItems = full.split "\n"
-    items = tItems.map{|i| parseItem(i.chomp)}
-    {:full_distance => full_schedule_distance(items), :items => items.length}
+  def self.parseSchedule(text, return_items = false)
+    tItems = text.split "\n"
+    items = tItems.map{|i| parseItem(i.chomp)}.compact
+    if return_items
+      items
+    else
+      {:full_distance => full_schedule_distance(items), :items => items.length}
+    end
   end
   
   def self.parseItem(text)
     re = /^#{LEVEL}#{MULTI}#{MULTI}#{DIST}/i
     parse = re.match text
-    item = Item.new(:full_text => text)
+    return nil if parse.nil?
+    item = Item.new(:text => text)
     case parse[1].length
     when 0
       item.level = 0

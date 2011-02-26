@@ -2,7 +2,7 @@ require 'json'
 
 class Schedule
 	def self.attrs
-		[ :slug, :body, :tags, :items ]
+		[ :slug, :body, :tags, :items, :full_distance ]
 	end
 
 	def attrs
@@ -20,11 +20,7 @@ class Schedule
 
 	def initialize(params={})
 		params.each do |key, value|
-		  unless key.to_sym == :items
-  			send("#{key}=", value)
-  		else
-  		  #create the items
-  		end
+  		send("#{key}=", value)
 		end
 	end
 
@@ -70,7 +66,8 @@ class Schedule
   end
 
   def self.create(params)
-		schedule = new(params)
+    params[:tags] = safe_split(params[:tags]).join
+		schedule = new(params.merge(Parser.parseSchedule(params[:body])))
 		schedule.save
 		schedule.create_indexes
 		schedule
@@ -81,8 +78,8 @@ class Schedule
   end
 
   def create_indexes
-    DB.zadd(ranked_key, 0, slug)
-    DB.lpush(chrono_key, slug)
+    DB.zadd(self.class.ranked_key, 0, slug)
+    DB.lpush(self.class.chrono_key, slug)
 
 		tags.split.each do |tag|
 			DB.lpush("#{App.db_base_key}:tagged:#{tag}", slug)
@@ -122,4 +119,8 @@ class Schedule
 			accum << "<a href=\"/s/tags/#{tag}\">#{tag}</a>"
 		end.join(" ")
 	end
+	
+	def self.safe_split(value)
+    value.scan(/\w+|,|\./).delete_if{|t| t =~ /,|\./}
+  end
 end

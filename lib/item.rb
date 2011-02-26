@@ -1,4 +1,4 @@
-class Item < Struct.new(:full_text, :inner, :outer, :distance, :level, :info)
+class Item < Struct.new(:text, :inner, :outer, :distance, :level, :info)
 	def initialize(params={})
 		params.each do |key, value|
 			send("#{key}=", value)

@@ -3,6 +3,8 @@ require 'sinatra'
 require 'ostruct'
 require 'rack-flash'
 require 'sinatra/redirect_with_flash'
+require 'active_support/inflector'
+
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
@@ -17,6 +19,16 @@ configure do
   App = OpenStruct.new(
         :db_base_key => 'swim'
         )
+end
+
+helpers do
+  def pluralize(number, text)
+    return text.pluralize if number != 1
+    text
+  end
+  
+  include Rack::Utils
+  alias_method :h, :escape_html
 end
 
 use Rack::Flash
@@ -40,8 +52,9 @@ end
 
 get '/s/:slug/' do
 	schedule = Schedule.find_by_slug(params[:slug])
+	items = Parser.parseSchedule(schedule.body, true)
 	halt [ 404, "Page not found" ] unless schedule
-	haml :schedule, :locals => { :schedule => schedule }
+	haml :schedule, :locals => { :schedule => schedule, :items => items }
 end
 
 get '/s/tags/:tag' do
