@@ -10,6 +10,14 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
+    compass (0.10.6)
+      haml (>= 3.0.4)
+    compass-susy-plugin (0.8.1)
+      compass (>= 0.10.0)
+    haml (3.0.25)
+    haml-more (0.5.1)
+      haml (>= 2.2.20)
+      monkey-lib (~> 0.5.2)
     highline (1.6.1)
     hirb (0.4.0)
     hiredis (0.3.1)
@@ -34,6 +42,12 @@ GEM
       monkey-lib (~> 0.5.0)
       sinatra (~> 1.0)
       sinatra-sugar (~> 0.5.0)
+    sinatra-compass (0.5.0)
+      compass (>= 0.8.17)
+      haml-more (~> 0.5.0)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
+      sinatra-sugar (~> 0.5.0)
     sinatra-redirect-with-flash (0.1.2)
       rack-flash (>= 0.1.1)
       sinatra (>= 0.9.1)
@@ -54,12 +68,14 @@ DEPENDENCIES
   awesome_print
   bond
   capistrano
+  compass-susy-plugin
   hirb
   hiredis
   json
   rack-flash
   redis
   sinatra
+  sinatra-compass
   sinatra-redirect-with-flash
   sinatra-reloader
   sketches
