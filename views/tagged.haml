@@ -1,0 +1,10 @@
+%h2
+  Schedules with Tag:
+  =tag
+- schedules.each do |schedule|
+  %small
+    =schedule.linked_tags
+  %p
+    =schedule.body
+  %p
+    %a(href="#{schedule.url}")more
