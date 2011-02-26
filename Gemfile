@@ -17,6 +17,11 @@ group :development do
 
   gem 'capistrano'
 
+  #testing
+  gem 'rspec'
+  gem 'mocha'
+
+
   #irb stuff
   gem 'wirble'
   gem 'hirb'

@@ -20,7 +20,11 @@ class Schedule
 
 	def initialize(params={})
 		params.each do |key, value|
-			send("#{key}=", value)
+		  unless key.to_sym == :items
+  			send("#{key}=", value)
+  		else
+  		  #create the items
+  		end
 		end
 	end
 
@@ -106,6 +110,7 @@ class Schedule
   def self.chrono_key
     "#{App.db_base_key}:chrono"
   end
+  
 ##################
   
   def url
