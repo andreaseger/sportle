@@ -1,10 +1,15 @@
-%h2
-  Schedules with Tag:
-  =tag
+- title "Schedules with Tag: #{tag}"
+  
 - schedules.each do |schedule|
   %small
     =schedule.linked_tags
   %p
-    =schedule.body
-  %p
+    Distance
+    = schedule.full_distance
+    %br
+    %small
+      with
+      = schedule.items
+      = pluralize(schedule.items, 'Item')
+    %br
     %a(href="#{schedule.url}")more

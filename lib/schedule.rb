@@ -83,7 +83,12 @@ class Schedule
 
 		tags.split.each do |tag|
 			DB.lpush("#{App.db_base_key}:tagged:#{tag}", slug)
+			DB.sadd "#{App.db_base_key}:tags", tag
 		end
+  end
+  
+  def self.get_tags
+    DB.smembers "#{App.db_base_key}:tags"
   end
 
 #################

@@ -1,7 +1,8 @@
 !!! 5
 %html
   %head
-    %title ScheduleDB
+    %title
+      = "Schedules - " << (section(:title) || "Untitled")
     %link(rel="stylesheet" href="/css/screen.css")  
     =# stylesheet('screen')
   %body
@@ -11,7 +12,14 @@
     %ul#nav
       %li
         %a(href="/s/new")new schedule
+    %ul#tags
+      - all_tags.each do |tag|
+        %li
+          %a(href="/s/tags/#{tag}")
+            =tag
     %div#content
+      - if show_title?
+        %h2= section(:title)
       = yield
       %p
         %a(href="/") show all

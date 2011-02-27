@@ -418,9 +418,6 @@ html > body {
   margin-right: auto;
   width: 61em;
   max-width: 100%;
-  background-image: url('/public/images/grid.png?1298676946');
-  background-repeat: repeat;
-  background-position: 1em 0;
 }
 /* line 22, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
 #content:after {
@@ -451,20 +448,29 @@ html > body {
 }
 
 /* line 36, ../../style/screen.sass */
-#nav {
+#nav,
+#tags {
   list-style: none;
   position: absolute;
-  top: 1em;
+  top: 0.5em;
   right: 1em;
 }
 /* line 11, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/utilities/lists/_bullets.scss */
-#nav li {
+#nav li,
+#tags li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
 
-/* line 41, ../../style/screen.sass */
+/* line 43, ../../style/screen.sass */
+#tags {
+  text-align: right;
+  top: 4em;
+  font-size: 70%;
+}
+
+/* line 48, ../../style/screen.sass */
 .items {
   list-style: none;
   padding-left: 10px;
@@ -478,11 +484,11 @@ html > body {
   list-style-type: none;
   margin-left: 0px;
 }
-/* line 48, ../../style/screen.sass */
+/* line 55, ../../style/screen.sass */
 .items .level1 {
   margin-left: 1.3em;
 }
-/* line 50, ../../style/screen.sass */
+/* line 57, ../../style/screen.sass */
 .items .level2 {
   margin-left: 2.6em;
 }
