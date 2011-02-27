@@ -12,7 +12,7 @@ gem 'hiredis'
 gem 'rack-flash'
 gem 'sinatra-redirect-with-flash'
 
-gem 'sinatra-compass'
+gem 'compass'
 gem 'compass-susy-plugin'
 
 group :development do
