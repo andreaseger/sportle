@@ -1,16 +1,17 @@
 -title 'Schedule', false
 %strong
-  =schedule.linked_tags
+  = schedule.linked_tags
+%small
+  = schedule.created_at.strftime '%d.%m.%y | %H:%M'
 %br
 %small
   = "#{schedule.full_distance}m"
-  with
-  = schedule.items
-  = pluralize(schedule.items, 'Item')
   =" - Score:"
   = schedule.score.to_i
-  %a(href="#{schedule.url}uprank")uprank
+  .uprank= button_to 'uprank', "#{schedule.url}uprank"
+    
 %ul.items
   -for item in items
     %li{:class=>"level#{item.level}"}
       =h item.text
+%a(href="#{schedule.url}edit")edit

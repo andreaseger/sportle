@@ -4,19 +4,20 @@
     %title
       = "Schedules - " << (section(:title) || "Untitled")
     %link(rel="stylesheet" href="/css/screen.css")  
-    =# stylesheet('screen')
   %body
     - [:error, :notice].each do |name|
       - unless flash[name].nil? 
         %div{:id => "flash_#{name}"}=flash[name]
     %ul#nav
       %li
-        %a(href="/s/new")new schedule
+        %a(href="/new")new schedule
     %ul#tags
       - all_tags.each do |tag|
         %li
-          %a(href="/s/tags/#{tag}")
-            =tag
+          %a(href="/tags/#{tag[0]}")
+            =tag[0]
+          ="-"
+          =tag[1]
     %div#content
       - if show_title?
         %h2= section(:title)

@@ -1,15 +1,16 @@
 - schedules.each do |schedule|
-  %small
-    =schedule.linked_tags
   %p
     Distance
     = schedule.full_distance
     %br
     %small
-      with
+      =schedule.linked_tags
+      %br
+      = schedule.created_at.strftime '%d.%m.%y | %H:%M'
+      |
       = schedule.items
       = pluralize(schedule.items, 'Item')
-      =" - Score:" 
+      | Score:
       = schedule.score.to_i
-    %br
+    %br      
     %a(href="#{schedule.url}")more

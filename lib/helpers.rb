@@ -30,9 +30,13 @@ helpers do
   end
   
   def cache_page(seconds=5*60)
-		#response['Cache-Control'] = "public, max-age=#{seconds}" unless development?
+		response['Cache-Control'] = "public, max-age=#{seconds}" unless development?
 	end
-	def paginate(page=1, per_page=25)
-	  Schedule.find_range((page-1)*per_page, per_page)
+	
+	def button_to(name, path, method='post')
+	  haml <<END
+%form{:method => '#{method}', :action => '#{path}'}
+  %input{:value => '#{name}', :type => 'submit'}
+END
 	end
 end

@@ -2,10 +2,11 @@ require 'redis/value'
 require 'redis/list'
 require 'redis/set'
 require 'redis/sorted_set'
+require 'redis/counter'
 
 class Schedule
 	def self.attrs
-		[ :slug, :body, :tags, :items, :full_distance]
+		[ :slug, :body, :tags, :items, :full_distance, :created_at]
 	end
 
 	def attrs
@@ -48,13 +49,13 @@ class Schedule
 	  if by_rank
 	    slugs = Redis::SortedSet.new(ranked_key).revrange(start,len)
 	  else
-  	  slugs = Redis::List.new(chrono_key)[start,len]
+  	  slugs = Redis::List.new(chrono_key)[start,len].reverse
 		end
     new_from_slugs slugs
 	end
 	
   def self.get_tags
-		Redis::Set.new("#{self}:tags").members
+		Redis::Set.new("#{self}:tags").members.map{|t| [t , Redis::Counter.new("#{self}:tagcount:#{t}").value]}
   end
 
   def self.uprank(slug)
@@ -77,9 +78,9 @@ class Schedule
   def self.create(params)
     params[:tags] = chop_crap(params[:tags])
 		schedule = new(params.merge(Parser.parseSchedule(params[:body])))
-		schedule.score = 0
+		schedule.body.gsub!(/\r\n/,"\r") 
 		schedule.save
-		schedule.create_indexes
+		schedule.build_indexes
 		schedule
   end
 
@@ -88,14 +89,48 @@ class Schedule
     obj.value = attrs
   end
 
-  def create_indexes
+  def build_indexes
     Redis::SortedSet.new(self.class.ranked_key)[slug] = 0
     Redis::List.new(self.class.chrono_key) << slug
 
 		tags.split.each do |tag|
-		  Redis::List.new("#{self.class}:tagged:#{tag}") << slug
-		  Redis::Set.new("#{self.class}:tags") << tag
+		  add_tag(tag)
 		end
+  end
+
+  def add_tag(tag)
+	  Redis::Counter.new("#{self.class}:tagcount:#{tag}").increment do
+  		Redis::List.new("#{self.class}:tagged:#{tag}") << slug
+	    Redis::Set.new("#{self.class}:tags") << tag
+	  end
+  end
+
+  def rem_tag(tag)
+	  Redis::Counter.new("#{self.class}:tagcount:#{tag}").decrement do |val|
+	    if val == 0
+    	  Redis::Set.new("#{self.class}:tags").delete tag
+    	  Redis::List.new("#{self.class}:tagged:#{tag}").del
+    	else
+    	  Redis::List.new("#{self.class}:tagged:#{tag}").delete slug
+	    end
+	  end
+  end
+
+
+  def update(new_body, new_tags)
+    tmp = Parser.parseSchedule(new_body)
+    self.body = new_body.gsub(/\r\n/,"\r")
+    self.full_distance = tmp[:full_distance]
+    self.items = tmp[:items]
+    
+    at = self.tags.split
+    self.tags = self.class.chop_crap(new_tags)
+    nt = self.tags.split
+
+    (nt-at).each {|tag| add_tag(tag)}
+    (at-nt).each {|tag| rem_tag(tag)}
+    
+    self.save
   end
 
 #################
@@ -123,16 +158,16 @@ class Schedule
 ##################
   
   def url
-    "/s/#{slug}/"
+    "/#{slug}/"
   end
   
 	def linked_tags
 		tags.split.inject([]) do |accum, tag|
-			accum << "<a href=\"/s/tags/#{tag}\">#{tag}</a>"
+			accum << "<a href=\"/tags/#{tag}\">#{tag}</a>"
 		end.join(" ")
 	end
 	
 	def self.chop_crap(value)
-    value.scan(/\w+|,|\./).delete_if{|t| t =~ /,|\./}.join(' ')
+    value.scan(/\w+|,|\./).delete_if{|t| t =~ /,|\./}.map{|t| t.downcase.strip}.join(' ')
   end
 end

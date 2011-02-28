@@ -8,7 +8,11 @@ describe Parser do
       it "should work with another schedule" do
         schedule = "400m einschwimmen\n2x200m Lagen\r\n4x100m Kraul\n  50m Ruecken\r\n300m ausschwimmen"
         Parser.parseSchedule(schedule)[:full_distance].should == 1700
-      end      
+      end
+      it "should work with \\r as lineend" do
+        schedule = "400m einschwimmen\r2x200m Lagen\r4x100m Kraul\r  50m Ruecken\r300m ausschwimmen"
+        Parser.parseSchedule(schedule)[:full_distance].should == 1700
+      end
     end
     context "#items" do
       it "should return the number of real - non info - items" do

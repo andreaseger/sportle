@@ -1,10 +1,17 @@
 - title 'List', false
 
 %small
+  sort
   - if by_rank
-    %a(href="/")sort chronologic
+    %strong
+      by rank
+    |
+    %a(href="/")chronologic
   - else
-    %a(href="/?sort=by_rank")sort by rank
+    %a(href="/?sort=by_rank")by rank
+    |
+    %strong
+      chronologic
 %br
   
 = haml :_schedules, :layout => false, :locals => {:schedules => schedules}

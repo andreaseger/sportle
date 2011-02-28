@@ -492,3 +492,8 @@ html > body {
 .items .level2 {
   margin-left: 2.6em;
 }
+
+/* line 61, ../../style/screen.sass */
+a:focus {
+  outline: none;
+}

@@ -1,6 +1,6 @@
 class Parser
   def self.parseSchedule(text, return_items = false)
-    tItems = text.split "\n"
+    tItems = text.split(/\r|\n/).delete_if{|i| i == ""}
     items = tItems.map{|i| parseItem(i.chomp)}.compact
     if return_items
       items
