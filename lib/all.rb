@@ -2,7 +2,7 @@ require 'schedule'
 require 'parser'
 require 'item'
 
-require 'hiredis'
+#require 'hiredis'
 require 'redis'
 
 redis_config = if ENV['REDIS_URL']
