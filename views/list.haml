@@ -1,15 +1,11 @@
 - title 'List', false
-- schedules.each do |schedule|
-  %small
-    =schedule.linked_tags
-  %p
-    Distance
-    = schedule.full_distance
-    %br
-    %small
-      with
-      = schedule.items
-      = pluralize(schedule.items, 'Item')
-    %br
-    %a(href="#{schedule.url}")more
+
+%small
+  - if by_rank
+    %a(href="/")sort chronologic
+  - else
+    %a(href="/?sort=by_rank")sort by rank
+%br
+  
+= haml :_schedules, :layout => false, :locals => {:schedules => schedules}
 

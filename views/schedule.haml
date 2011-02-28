@@ -1,11 +1,15 @@
 -title 'Schedule', false
 %strong
   =schedule.linked_tags
+%br
 %small
   = "#{schedule.full_distance}m"
   with
   = schedule.items
   = pluralize(schedule.items, 'Item')
+  =" - Score:"
+  = schedule.score.to_i
+  %a(href="#{schedule.url}uprank")uprank
 %ul.items
   -for item in items
     %li{:class=>"level#{item.level}"}

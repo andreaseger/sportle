@@ -13,5 +13,5 @@ else
 	{}
 end
 
-DB = Redis.new(redis_config)
+$redis = Redis.new(redis_config)
 

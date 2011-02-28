@@ -1,5 +1,3 @@
-- title "Schedules with Tag: #{tag}"
-  
 - schedules.each do |schedule|
   %small
     =schedule.linked_tags
@@ -11,5 +9,7 @@
       with
       = schedule.items
       = pluralize(schedule.items, 'Item')
+      =" - Score:" 
+      = schedule.score.to_i
     %br
     %a(href="#{schedule.url}")more

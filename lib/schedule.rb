@@ -1,8 +1,11 @@
-require 'json'
+require 'redis/value'
+require 'redis/list'
+require 'redis/set'
+require 'redis/sorted_set'
 
 class Schedule
 	def self.attrs
-		[ :slug, :body, :tags, :items, :full_distance ]
+		[ :slug, :body, :tags, :items, :full_distance]
 	end
 
 	def attrs
@@ -24,37 +27,43 @@ class Schedule
 		end
 	end
 
-	class RecordNotFound < RuntimeError; end
-
 #################
-
-	def self.new_from_json(json)
-		raise RecordNotFound unless json
-		new JSON.parse(json)
-	end
 
 	def self.new_from_slugs(slugs)
 		return [] if slugs.empty?
 		ids = slugs.map { |slug| db_key_for_slug(slug) }
-		DB.mget(*ids).map { |json| new_from_json(json) }
+		ids.map {|id| new Redis::Value.new(id, :marshal => true).value }
 	end
 
 	def self.find_by_slug(slug)
-		new_from_json DB[db_key_for_slug(slug)]
+	  new Redis::Value.new(db_key_for_slug(slug), :marshal => true).value
 	end
 
 	def self.find_tagged(tag)
-		new_from_slugs DB.lrange("#{App.db_base_key}:tagged:#{tag}", 0, 99999)
+  	list = Redis::List.new("#{self}:tagged:#{tag}")
+		new_from_slugs list.values
 	end
 
 	def self.find_range(start, len, by_rank=false)
 	  if by_rank
-	    new_from_slugs DB.zrevrange(ranked_key, start, start + len - 1)
+	    slugs = Redis::SortedSet.new(ranked_key).revrange(start,len)
 	  else
-		  new_from_slugs DB.lrange(chrono_key, start, start + len - 1)
+  	  slugs = Redis::List.new(chrono_key)[start,len]
 		end
+    new_from_slugs slugs
 	end
 	
+  def self.get_tags
+		Redis::Set.new("#{self}:tags").members
+  end
+
+  def self.uprank(slug)
+    Redis::SortedSet.new(ranked_key).incr(slug)
+  end
+  
+  def score
+    Redis::SortedSet.new(self.class.ranked_key)[slug]
+  end
 #################
 
   def self.all_by_rank
@@ -66,29 +75,27 @@ class Schedule
   end
 
   def self.create(params)
-    params[:tags] = safe_split(params[:tags]).join
+    params[:tags] = chop_crap(params[:tags])
 		schedule = new(params.merge(Parser.parseSchedule(params[:body])))
+		schedule.score = 0
 		schedule.save
 		schedule.create_indexes
 		schedule
   end
 
   def save
-    DB[db_key] = attrs.to_json
+    obj = Redis::Value.new(db_key, :marshal => true)
+    obj.value = attrs
   end
 
   def create_indexes
-    DB.zadd(self.class.ranked_key, 0, slug)
-    DB.lpush(self.class.chrono_key, slug)
+    Redis::SortedSet.new(self.class.ranked_key)[slug] = 0
+    Redis::List.new(self.class.chrono_key) << slug
 
 		tags.split.each do |tag|
-			DB.lpush("#{App.db_base_key}:tagged:#{tag}", slug)
-			DB.sadd "#{App.db_base_key}:tags", tag
+		  Redis::List.new("#{self.class}:tagged:#{tag}") << slug
+		  Redis::Set.new("#{self.class}:tags") << tag
 		end
-  end
-  
-  def self.get_tags
-    DB.smembers "#{App.db_base_key}:tags"
   end
 
 #################
@@ -99,7 +106,7 @@ class Schedule
 	end
 
   def self.db_key_for_slug(slug)
-    "#{App.db_base_key}:slug:#{slug}"
+    "#{self}:slug:#{slug}"
   end
   
 	def db_key
@@ -107,10 +114,10 @@ class Schedule
 	end
 
   def self.ranked_key
-    "#{App.db_base_key}:ranked"
+    "#{self}:ranked"
   end
   def self.chrono_key
-    "#{App.db_base_key}:chrono"
+    "#{self}:chrono"
   end
   
 ##################
@@ -125,7 +132,7 @@ class Schedule
 		end.join(" ")
 	end
 	
-	def self.safe_split(value)
-    value.scan(/\w+|,|\./).delete_if{|t| t =~ /,|\./}
+	def self.chop_crap(value)
+    value.scan(/\w+|,|\./).delete_if{|t| t =~ /,|\./}.join(' ')
   end
 end

@@ -5,9 +5,9 @@ gem 'sinatra'
 gem 'activesupport'
 gem 'i18n'
 
-gem 'json'
 gem 'redis'
 gem 'hiredis'
+gem 'redis-objects'
 
 gem 'rack-flash'
 gem 'sinatra-redirect-with-flash'

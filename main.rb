@@ -14,7 +14,7 @@ require 'helpers'
 configure(:development) do |c|
   require "sinatra/reloader"
   c.also_reload "*.rb"
-  c.also_reload "lib/*.rb"
+  c.also_reload "lib/**/*.rb"
 end
 
 configure do
@@ -31,20 +31,23 @@ enable :sessions
 layout :layout
 
 
+#get '/' do
+#  cache_page
+#  schedules = Schedule.all
+#  haml :list,  :locals => { :schedules => schedules}
+#end
+
 get '/' do
   cache_page
-  schedules = Schedule.all
-  haml :list,  :locals => { :schedules => schedules}
-end
-
-get '/:by_rank' do
-  cache_page
-  if params[:by_rank] == true
+  page = params[:page].to_i
+  if params[:sort] == 'by_rank'
     schedules = Schedule.all_by_rank
+    by_rank = true
   else
-    schedules = Schedule.all
+    schedules = Schedule.all#paginate(page)
+    by_rank = false
   end
-  haml :list,  :locals => { :schedules => schedules}
+  haml :list,  :locals => { :schedules => schedules, :by_rank => by_rank}
 end
 
 get '/s/new' do
@@ -69,5 +72,10 @@ get '/s/tags/:tag' do
   cache_page
 	tag = params[:tag].downcase.strip
 	schedules = Schedule.find_tagged(tag)
-	haml :tagged, :locals => { :schedules => schedules, :tag => tag}
+	haml :list_tagged, :locals => { :schedules => schedules, :tag => tag}
+end
+
+get '/s/:slug/uprank' do
+  Schedule.uprank(params[:slug])
+  redirect "/s/#{params[:slug]}/"
 end
