@@ -8,7 +8,7 @@ Rspec.configure do |config|
   config.mock_with :mocha
   
   config.before(:each) do
-    DB.select 12
-    DB.flushdb
+    $redis.select 12
+    $redis.flushdb
   end
 end
