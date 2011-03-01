@@ -1,7 +1,7 @@
 - schedules.each do |schedule|
-  %p
+  %p.schedule
     Distance
-    = schedule.full_distance
+    = "#{schedule.full_distance}m"
     %br
     %small
       =schedule.linked_tags

@@ -1,4 +1,7 @@
-- title "Schedules with Tag: #{tag}"
-  
+- title "Schedules with Tag: #{tag}", false
+
+%h2.sans.allcaps
+  Tagged with:
+  %mark=tag
 = haml :_schedules, :layout => false, :locals => {:schedules => schedules}
 

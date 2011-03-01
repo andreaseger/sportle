@@ -10,52 +10,76 @@
 
 // change '.container' to match your HTML container element
 // or @extend it to apply multiple containers on your site.
-#content
+#container
   +container
   //+show-grid("grid.png")
+  //*
+    background-color: rgba(0,0,0,.125)
 
-// show-grid loads a 64+16x24 grid image by default
-// For other grid settings, run `compass grid-img 30+10x20`
-// Where 30 is the column width, 10 is the gutter width,
-// and 20 is the (optional) line-height.
+h1
+  +full
+  +prefix(3)
+  +adjust-font-size-to(25px)
+  +leader(1,25px)
+  +trailer(1,25px)
 
-// Styles --------------------------------------------------------------
+h2
+  +full
+  +adjust-font-size-to(18px)
+  //+trailer(1,10px)
 
-#flash_notice
-#flash_error
-  padding: 5px 8px
-  margin: 10px 0
-#flash_notice
-  background-color: #ccffcc
-  border: solid 1px #66cc66
-
-#flash_error
-  background-color: #ffcccc
-  border: solid 1px #cc6666
-
-#nav,
-#tags
-  +no-bullets
-  position: absolute
-  top: 0.5em
-  right: 1em
-
-#tags
+#sidebar
+  +columns(3)
+  +alpha
   text-align: right
-  top: 4em
-  font-size: 70%
+  ul
+    +no-bullets
+  #tagcloud
+    +tag-cloud
+  
 
-.items
-  +no-bullets
-  padding-left: 10px
-  margin-left: 30px
-  font-size: 1.1em
-  font-family: monospace
-  .level0
-  .level1
-    margin-left: 1.3em
-  .level2
-    margin-left: 2.6em
+div[role="main"]
+  +columns(9)
+  +omega
+  #flash_notice,
+  #flash_error
+    padding: 5px 8px
+    margin: 10px 0
+  #flash_notice
+    background-color: #ccffcc
+    border: solid 1px #66cc66
+  #flash_error
+    background-color: #ffcccc
+    border: solid 1px #cc6666
+  .schedule
+    border:
+      bottom: solid
+    .items
+      +no-bullets
+      +adjust-font-size-to(18px)
+      .level1
+        padding-left: 1.3em
+      .level2
+        padding-left: 2.6em
+
+    
+
+
+footer
+  +full
+  +pad(3,3)
+
+//#nav,
+//#tags
+//  +no-bullets
+//  position: absolute
+//  top: 0.5em
+//  right: 1em//
+
+//#tags
+//  text-align: right
+//  top: 4em
+//  font-size: 70%
 
 a
   &:focus

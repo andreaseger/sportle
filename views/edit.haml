@@ -1,10 +1,6 @@
--title 'Create/Edit Schedule', false
-:erb
-  <form action="<%= url %>" method="post" name="edit" id="schedule_edit">
-    <p class="meta"><input type="text" name="tags" value="<%= schedule.tags %>" /></p>
-    <div class="entry">
-  	  <textarea name="body"><%= schedule.body%></textarea>
-    </div>
-    <div class="edit"><input type="submit" value="Save" /></div>
-  </form>
-
+- title 'Create/Edit Schedule', false
+%form{:action => "#{url}", :method => "post", :name => "edit", :id => "schedule_edit"}
+  %input{:type => "text", :name => "tags", :value => "#{schedule.tags}"}
+  %textarea{:name => "body"}
+    = schedule.body
+  %input{:type => "submit", :value => 'Save'}

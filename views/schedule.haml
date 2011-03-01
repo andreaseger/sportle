@@ -1,17 +1,16 @@
 -title 'Schedule', false
-%strong
-  = schedule.linked_tags
-%small
-  = schedule.created_at.strftime '%d.%m.%y | %H:%M'
-%br
-%small
-  = "#{schedule.full_distance}m"
-  =" - Score:"
+.schedule
+  %h2.sans
+    = "#{schedule.full_distance}m"
+  %small
+    .tags= schedule.linked_tags
+    = schedule.created_at.strftime '%d.%m.%y | %H:%M'
+      
+  %ul.items.mono
+    -for item in items
+      %li{:class=>"level#{item.level}"}
+        =h item.text
+  %a{:href=>"#{schedule.url}edit"}edit
+  =" | Score:"
   = schedule.score.to_i
   .uprank= button_to 'uprank', "#{schedule.url}uprank"
-    
-%ul.items
-  -for item in items
-    %li{:class=>"level#{item.level}"}
-      =h item.text
-%a(href="#{schedule.url}edit")edit

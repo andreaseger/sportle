@@ -9,33 +9,18 @@ require 'active_support/inflector'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
 
-require 'helpers'
-
 configure(:development) do |c|
   require "sinatra/reloader"
-  c.also_reload "*.rb"
   c.also_reload "**/*.rb"
-end
-
-configure do
-  App = OpenStruct.new(
-        :db_base_key => 'swim'
-        )
 end
 
 set :haml, :format => :html5
 
 use Rack::Flash
 enable :sessions
-
 layout :layout
 
-
-#get '/' do
-#  cache_page
-#  schedules = Schedule.all
-#  haml :list,  :locals => { :schedules => schedules}
-#end
+require 'helpers'
 
 get '/' do
   cache_page
@@ -62,17 +47,17 @@ end
 
 get '/:slug/' do
   cache_page
-	schedule = Schedule.find_by_slug(params[:slug])
-	items = Parser.parseSchedule(schedule.body, true)
-	halt [ 404, "Page not found" ] unless schedule
-	haml :schedule, :locals => { :schedule => schedule, :items => items }
+  schedule = Schedule.find_by_slug(params[:slug])
+  items = Parser.parseSchedule(schedule.body, true)
+  halt [ 404, "Page not found" ] unless schedule
+  haml :schedule, :locals => { :schedule => schedule, :items => items }
 end
 
 get '/tags/:tag' do
   cache_page
-	tag = params[:tag].downcase.strip
-	schedules = Schedule.find_tagged(tag)
-	haml :list_tagged, :locals => { :schedules => schedules, :tag => tag}
+  tag = params[:tag].downcase.strip
+  schedules = Schedule.find_tagged(tag)
+  haml :list_tagged, :locals => { :schedules => schedules, :tag => tag}
 end
 
 post '/:slug/uprank' do
@@ -81,16 +66,16 @@ post '/:slug/uprank' do
 end
 
 get '/:slug/edit' do
-	schedule = Schedule.find_by_slug(params[:slug])
-	halt [ 404, "Page not found" ] unless schedule
-	haml :edit, :locals => { :schedule => schedule, :url => schedule.url }
+  schedule = Schedule.find_by_slug(params[:slug])
+  halt [ 404, "Page not found" ] unless schedule
+  haml :edit, :locals => { :schedule => schedule, :url => schedule.url }
 end
 
 post '/:slug/' do
-	schedule = Schedule.find_by_slug(params[:slug])
-	halt [ 404, "Page not found" ] unless schedule
-	schedule.update(params[:body],params[:tags])
-	redirect schedule.url, :notice => "Schedule successfull updated"
+  schedule = Schedule.find_by_slug(params[:slug])
+  halt [ 404, "Page not found" ] unless schedule
+  schedule.update(params[:body],params[:tags])
+  redirect schedule.url, :notice => "Schedule successfull updated"
 end
 
 

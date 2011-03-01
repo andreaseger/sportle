@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* Reset --------------------------------------------------------------*/
-/* line 14, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 14, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,48 +20,48 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   vertical-align: baseline;
 }
 
-/* line 17, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 body {
   line-height: 1;
   color: black;
   background: white;
 }
 
-/* line 19, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 19, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 21, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 21, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: separate;
   border-spacing: 0;
   vertical-align: middle;
 }
 
-/* line 23, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 23, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 25, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 25, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: "" "";
 }
-/* line 96, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 96, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
 }
 
-/* line 27, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 27, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
 /* HTML5 Reset --------------------------------------------------------------*/
-/* line 108, ../../../../.rvm/gems/ree-1.8.7-2011.01@ssched/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 108, ../../../../../../RailsInstaller/Ruby1.8.7/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   margin: 0;
   padding: 0;
@@ -92,12 +92,12 @@ html {
 }
 
 /* line 29, ../../style/_defaults.sass */
-.caps, .allcaps, h1, h2, caption, .smallcaps, h4 {
+.caps, .allcaps, h1, caption, .smallcaps, h4 {
   letter-spacing: 0.1em;
 }
 
 /* line 32, ../../style/_defaults.sass */
-.allcaps, h1, h2, caption {
+.allcaps, h1, caption {
   text-transform: uppercase;
 }
 
