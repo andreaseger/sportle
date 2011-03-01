@@ -10,7 +10,12 @@
     -for item in items
       %li{:class=>"level#{item.level}"}
         =h item.text
-  %a{:href=>"#{schedule.url}edit"}edit
-  =" | Score:"
-  = schedule.score.to_i
-  .uprank= button_to 'uprank', "#{schedule.url}uprank"
+  .controls
+    %a{:href=>"#{schedule.url}edit"}edit
+    |
+    %a{:href=>"", :class => 'uprank'}uprank
+    |
+    Score:
+  .score
+    = schedule.score.to_i
+  

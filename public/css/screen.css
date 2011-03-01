@@ -540,6 +540,11 @@ div[role="main"] .schedule {
   border-bottom: solid;
 }
 /* line 61, ../../style/screen.sass */
+div[role="main"] .schedule .controls {
+  float: left;
+  padding-right: 0.4em;
+}
+/* line 64, ../../style/screen.sass */
 div[role="main"] .schedule .items {
   list-style: none;
   font-size: 1.125em;
@@ -551,16 +556,16 @@ div[role="main"] .schedule .items li {
   list-style-type: none;
   margin-left: 0px;
 }
-/* line 64, ../../style/screen.sass */
+/* line 67, ../../style/screen.sass */
 div[role="main"] .schedule .items .level1 {
   padding-left: 1.3em;
 }
-/* line 66, ../../style/screen.sass */
+/* line 69, ../../style/screen.sass */
 div[role="main"] .schedule .items .level2 {
   padding-left: 2.6em;
 }
 
-/* line 69, ../../style/screen.sass */
+/* line 72, ../../style/screen.sass */
 footer {
   clear: both;
   margin-right: 1.639%;
@@ -573,46 +578,46 @@ footer {
 @media all and (orientation:landscape);
 @media screen and (max-device-width: 480px);
 @media print {
-  /* line 81, ../../style/screen.sass */
+  /* line 84, ../../style/screen.sass */
   * {
     background: transparent !important;
     color: #444444 !important;
     text-shadow: none !important;
   }
 
-  /* line 85, ../../style/screen.sass */
+  /* line 88, ../../style/screen.sass */
   a, a:visited {
     color: #444444 !important;
     text-decoration: underline;
   }
 
-  /* line 88, ../../style/screen.sass */
+  /* line 91, ../../style/screen.sass */
   a:after {
     content: " (" attr(href) ")";
   }
 
-  /* line 90, ../../style/screen.sass */
+  /* line 93, ../../style/screen.sass */
   abbr:after {
     content: " (" attr(title) ")";
   }
 
-  /* line 92, ../../style/screen.sass */
+  /* line 95, ../../style/screen.sass */
   .ir a:after {
     content: "";
   }
 
-  /* line 94, ../../style/screen.sass */
+  /* line 97, ../../style/screen.sass */
   pre, blockquote {
     border: 1px solid #999999;
     page-break-inside: avoid;
   }
 
-  /* line 97, ../../style/screen.sass */
+  /* line 100, ../../style/screen.sass */
   thead {
     display: table-header-group;
   }
 
-  /* line 99, ../../style/screen.sass */
+  /* line 102, ../../style/screen.sass */
   tr, img {
     page-break-inside: avoid;
   }
@@ -621,13 +626,13 @@ footer {
     margin: 0.5cm;
 }
 
-  /* line 103, ../../style/screen.sass */
+  /* line 106, ../../style/screen.sass */
   p, h2, h3 {
     orphans: 3;
     widows: 3;
   }
 
-  /* line 106, ../../style/screen.sass */
+  /* line 109, ../../style/screen.sass */
   h2, h3 {
     page-break-after: avoid;
   }

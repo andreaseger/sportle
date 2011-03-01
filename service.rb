@@ -66,8 +66,7 @@ class Service < Sinatra::Base
   end
 
   post '/:slug/uprank' do
-    Schedule.uprank(params[:slug])
-    redirect "/#{params[:slug]}/"
+    Schedule.uprank(params[:slug]).to_s
   end
 
   get '/:slug/edit' do
