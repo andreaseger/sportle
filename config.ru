@@ -1,0 +1,2 @@
+require 'service'
+run Service
