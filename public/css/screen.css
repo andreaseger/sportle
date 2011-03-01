@@ -450,7 +450,12 @@ h2 {
   line-height: 1.333em;
 }
 
-/* line 31, ../../style/screen.sass */
+/* line 32, ../../style/screen.sass */
+a:focus {
+  outline: none;
+}
+
+/* line 35, ../../style/screen.sass */
 #sidebar {
   display: inline;
   float: left;
@@ -459,7 +464,7 @@ h2 {
   margin-left: 1.639%;
   text-align: right;
 }
-/* line 35, ../../style/screen.sass */
+/* line 39, ../../style/screen.sass */
 #sidebar ul {
   list-style: none;
 }
@@ -469,7 +474,7 @@ h2 {
   list-style-type: none;
   margin-left: 0px;
 }
-/* line 37, ../../style/screen.sass */
+/* line 41, ../../style/screen.sass */
 #sidebar #tagcloud {
   font-size: 1em;
   line-height: 1.2em;
@@ -503,7 +508,7 @@ h2 {
   font-size: 2em;
 }
 
-/* line 41, ../../style/screen.sass */
+/* line 45, ../../style/screen.sass */
 div[role="main"] {
   display: inline;
   float: left;
@@ -514,27 +519,27 @@ div[role="main"] {
   margin-right: 1.639%;
   #margin-left: -1em;
 }
-/* line 44, ../../style/screen.sass */
+/* line 48, ../../style/screen.sass */
 div[role="main"] #flash_notice,
 div[role="main"] #flash_error {
   padding: 5px 8px;
   margin: 10px 0;
 }
-/* line 48, ../../style/screen.sass */
+/* line 52, ../../style/screen.sass */
 div[role="main"] #flash_notice {
   background-color: #ccffcc;
   border: solid 1px #66cc66;
 }
-/* line 51, ../../style/screen.sass */
+/* line 55, ../../style/screen.sass */
 div[role="main"] #flash_error {
   background-color: #ffcccc;
   border: solid 1px #cc6666;
 }
-/* line 54, ../../style/screen.sass */
+/* line 58, ../../style/screen.sass */
 div[role="main"] .schedule {
   border-bottom: solid;
 }
-/* line 57, ../../style/screen.sass */
+/* line 61, ../../style/screen.sass */
 div[role="main"] .schedule .items {
   list-style: none;
   font-size: 1.125em;
@@ -546,16 +551,16 @@ div[role="main"] .schedule .items li {
   list-style-type: none;
   margin-left: 0px;
 }
-/* line 60, ../../style/screen.sass */
+/* line 64, ../../style/screen.sass */
 div[role="main"] .schedule .items .level1 {
   padding-left: 1.3em;
 }
-/* line 62, ../../style/screen.sass */
+/* line 66, ../../style/screen.sass */
 div[role="main"] .schedule .items .level2 {
   padding-left: 2.6em;
 }
 
-/* line 68, ../../style/screen.sass */
+/* line 69, ../../style/screen.sass */
 footer {
   clear: both;
   margin-right: 1.639%;
@@ -564,7 +569,66 @@ footer {
   padding-right: 24.59%;
 }
 
-/* line 85, ../../style/screen.sass */
-a:focus {
-  outline: none;
+@media all and (orientation:portrait);
+@media all and (orientation:landscape);
+@media screen and (max-device-width: 480px);
+@media print {
+  /* line 81, ../../style/screen.sass */
+  * {
+    background: transparent !important;
+    color: #444444 !important;
+    text-shadow: none !important;
+  }
+
+  /* line 85, ../../style/screen.sass */
+  a, a:visited {
+    color: #444444 !important;
+    text-decoration: underline;
+  }
+
+  /* line 88, ../../style/screen.sass */
+  a:after {
+    content: " (" attr(href) ")";
+  }
+
+  /* line 90, ../../style/screen.sass */
+  abbr:after {
+    content: " (" attr(title) ")";
+  }
+
+  /* line 92, ../../style/screen.sass */
+  .ir a:after {
+    content: "";
+  }
+
+  /* line 94, ../../style/screen.sass */
+  pre, blockquote {
+    border: 1px solid #999999;
+    page-break-inside: avoid;
+  }
+
+  /* line 97, ../../style/screen.sass */
+  thead {
+    display: table-header-group;
+  }
+
+  /* line 99, ../../style/screen.sass */
+  tr, img {
+    page-break-inside: avoid;
+  }
+
+  @page {
+    margin: 0.5cm;
+}
+
+  /* line 103, ../../style/screen.sass */
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* line 106, ../../style/screen.sass */
+  h2, h3 {
+    page-break-after: avoid;
+  }
 }

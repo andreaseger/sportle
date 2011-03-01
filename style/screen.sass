@@ -28,6 +28,10 @@ h2
   +adjust-font-size-to(18px)
   //+trailer(1,10px)
 
+a
+  &:focus
+    outline: none
+
 #sidebar
   +columns(3)
   +alpha
@@ -62,25 +66,42 @@ div[role="main"]
       .level2
         padding-left: 2.6em
 
-    
-
-
 footer
   +full
   +pad(3,3)
 
-//#nav,
-//#tags
-//  +no-bullets
-//  position: absolute
-//  top: 0.5em
-//  right: 1em//
 
-//#tags
-//  text-align: right
-//  top: 4em
-//  font-size: 70%
+@media all and (orientation:portrait)
 
-a
-  &:focus
-    outline: none
+@media all and (orientation:landscape)
+
+@media screen and (max-device-width: 480px)
+
+@media print
+  *
+    background: transparent !important
+    color: #444 !important
+    text-shadow: none !important
+  a, a:visited
+    color: #444 !important
+    text-decoration: underline
+  a:after
+    content: " (" attr(href) ")"
+  abbr:after
+    content: " (" attr(title) ")"
+  .ir a:after
+    content: ""
+  pre, blockquote
+    border: 1px solid #999
+    page-break-inside: avoid
+  thead
+    display: table-header-group
+  tr, img
+    page-break-inside: avoid
+  @page
+    margin: 0.5cm
+  p, h2, h3
+    orphans: 3
+    widows: 3
+  h2, h3
+    page-break-after: avoid
