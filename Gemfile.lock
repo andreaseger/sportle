@@ -20,7 +20,6 @@ GEM
     highline (1.6.1)
     hirb (0.4.0)
     i18n (0.5.0)
-    mocha (0.9.12)
     monkey-lib (0.5.4)
       backports
     net-scp (1.0.4)
@@ -77,7 +76,6 @@ DEPENDENCIES
   compass-susy-plugin
   hirb
   i18n
-  mocha
   rack-flash
   redis
   redis-objects

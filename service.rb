@@ -6,6 +6,7 @@ require "sinatra/reloader"
 require 'ostruct'
 require 'rack-flash'
 require 'active_support/inflector'
+require 'haml'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
@@ -15,16 +16,18 @@ class Service < Sinatra::Base
   configure do |c|
     register Sinatra::RedirectWithFlash
     helpers Sinatra::MyHelper
+
     set :public, File.dirname(__FILE__) + '/public'
     set :haml, :format => :html5
-    use Rack::Flash
-    enable :sessions
+
+    use Rack::Flash, :sweep => true
+    enable :sessions    
     layout :layout
   end
 
   configure :development do |c|
     register Sinatra::Reloader
-    c.also_reload "**/*.rb"
+    c.also_reload "lib/*.rb"
   end
 
   get '/' do
@@ -47,7 +50,7 @@ class Service < Sinatra::Base
 
   post '/' do
     schedule = Schedule.create :body => params[:body], :tags => params[:tags], :created_at => Time.now, :slug => Schedule.make_slug(params[:body])
-    redirect schedule.url, :notice => "Schedule successfull created"
+    redirect schedule.url#, :notice => "Schedule successfull created"
   end
 
   get '/:slug/' do
@@ -79,6 +82,9 @@ class Service < Sinatra::Base
     schedule = Schedule.find_by_slug(params[:slug])
     halt [ 404, "Page not found" ] unless schedule
     schedule.update(params[:body],params[:tags])
-    redirect schedule.url, :notice => "Schedule successfull updated"
+    redirect schedule.url#, :notice => "Schedule successfull updated"
   end
+
+  # start the server if ruby file executed directly
+  run! if app_file == $0
 end

@@ -17,12 +17,11 @@ gem 'compass-susy-plugin'
 
 group :development do
   gem 'sinatra-reloader'
-
   gem 'capistrano'
 
   #testing
   gem 'rspec'
-  gem 'mocha'
+  #gem 'mocha'
 
 
   #irb stuff

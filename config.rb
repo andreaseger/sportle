@@ -5,8 +5,12 @@ require 'susy'
 http_path = "/"
 css_dir = "public/css"
 sass_dir = "style"
-images_dir = "images"
+images_dir = "public/images"
+http_images_path = '/images'
 javascripts_dir = "public/javascripts"
 # To enable relative paths to assets via compass helper functions. Uncomment:
 # relative_assets = true
 preferred_syntax = :sass
+
+#environment = :production
+#output_style = :compressed

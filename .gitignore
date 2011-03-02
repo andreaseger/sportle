@@ -1,3 +1,4 @@
 .rvmrc
 .sass-cache/**/*
 rspec.sh
+config/deploy.rb
