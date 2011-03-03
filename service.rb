@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'sinatra/base'
-require "sinatra/reloader"
+require "sinatra/reloader" if :development
 
 require 'ostruct'
 require 'rack-flash'
