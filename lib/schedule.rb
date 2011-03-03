@@ -1,9 +1,3 @@
-require 'redis/value'
-require 'redis/list'
-require 'redis/set'
-require 'redis/sorted_set'
-require 'redis/counter'
-
 class Schedule
   def self.attrs
     [ :slug, :body, :tags, :items, :full_distance, :created_at]

@@ -8,9 +8,12 @@ require 'rack-flash'
 require 'active_support/inflector'
 require 'haml'
 
+require 'omniauth'
+
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
 require 'helpers'
+require 'omniauthdata'
 
 class Service < Sinatra::Base
   configure do |c|
@@ -19,6 +22,9 @@ class Service < Sinatra::Base
 
     set :public, File.dirname(__FILE__) + '/public'
     set :haml, :format => :html5
+
+    use Sinatra::OmniauthData
+
 
     use Rack::Flash, :sweep => true
     enable :sessions    
@@ -37,7 +43,7 @@ class Service < Sinatra::Base
       schedules = Schedule.all_by_rank
       by_rank = true
     else
-      schedules = Schedule.all
+       schedules = Schedule.all
       by_rank = false
     end
     haml :list,  :locals => { :schedules => schedules, :by_rank => by_rank}
@@ -83,6 +89,25 @@ class Service < Sinatra::Base
     halt [ 404, "Page not found" ] unless schedule
     schedule.update(params[:body],params[:tags])
     redirect schedule.url#, :notice => "Schedule successfull updated"
+  end
+  
+  post '/auth/:name/callback' do
+    auth = request.env['omniauth.auth']
+    user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.new(auth)
+    session[:user_key] = user.key
+    if auth['provider'] == 'facebook'
+      session[:fb_token] = auth['fb_auth']['credentials']['token']
+    end
+    redirect '/'#, :notice => "Signed in!"
+  end
+  get '/auth/failure' do
+    clear_session
+    redirect '/'#, :error => 'In order to use this site you must allow us access to your Facebook data'
+  end
+
+  get '/signout' do
+    clear_session
+    redirect '/'#, :notice => "Signed out!"
   end
 
   # start the server if ruby file executed directly

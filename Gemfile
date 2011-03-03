@@ -5,6 +5,8 @@ gem 'sinatra'
 gem 'activesupport'
 gem 'i18n'
 
+gem 'omniauth'
+
 gem 'redis'
 #gem 'hiredis'
 gem 'redis-objects'

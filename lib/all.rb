@@ -4,6 +4,11 @@ require 'item'
 
 #require 'hiredis'
 require 'redis'
+require 'redis/value'
+require 'redis/list'
+require 'redis/set'
+require 'redis/sorted_set'
+require 'redis/counter'
 
 redis_config = if ENV['REDIS_URL']
   require 'uri'

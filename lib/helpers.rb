@@ -47,5 +47,14 @@ module Sinatra
   %input{:value => '#{name}', :type => 'submit'}
 END
     end
+    def clear_session
+      session[:user_key] = nil
+      session[:fb_token] = nil
+      session[:fb_error] = nil
+    end
+
+    def auth
+      return !User.find_by_key(session[:user_key]).nil?
+    end
   end
 end
