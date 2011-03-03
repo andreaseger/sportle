@@ -12,7 +12,10 @@ class User < Struct.new(:provider, :uid, :name)
     end
   end
   def self.find_by_key(user_key)
-    tmp=user_key.split(';')
+    tmp=user_key.split(':')
     find_by_provider_and_uid(tmp[0],tmp[1])
+  end
+  def key
+    "#{self.provider}:#{self.uid}"
   end
 end

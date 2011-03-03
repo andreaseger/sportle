@@ -47,12 +47,16 @@
             %a(href="/new")new schedule
           %li
             %a(href="/")show all
-      %ul#auth
-        Sign in with
-        %li
-          %a{:href=>'/auth/twitter'}Twitter
-        %li
-          %a{:href=>'/auth/facebook'}Facebook
+      - if user
+        Hello
+        = user.name
+      -else
+        %ul#auth
+          Sign in with
+          %li
+            %a{:href=>'/auth/twitter'}Twitter
+          %li
+            %a{:href=>'/auth/facebook'}Facebook
       %ul#tagcloud
         -# tag_cloud %w(xxs xs s l xl xxl) do |tag, css_class|
           %li

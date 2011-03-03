@@ -53,8 +53,10 @@ END
       session[:fb_error] = nil
     end
 
-    def auth
-      return !User.find_by_key(session[:user_key]).nil?
+    def user
+      if session[:user_key]
+        @user = User.find_by_key(session[:user_key]) unless @user
+      end
     end
   end
 end

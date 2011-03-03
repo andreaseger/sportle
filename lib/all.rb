@@ -1,6 +1,7 @@
 require 'schedule'
 require 'parser'
 require 'item'
+require 'user'
 
 #require 'hiredis'
 require 'redis'

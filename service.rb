@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra/base'
-#require 'sinatra/redirect_with_flash'
 require "sinatra/reloader"
 
 require 'ostruct'
@@ -17,7 +16,6 @@ require 'omniauthdata'
 
 class Service < Sinatra::Base
   configure do |c|
-    #register Sinatra::RedirectWithFlash
     helpers Sinatra::MyHelper
 
     set :public, File.dirname(__FILE__) + '/public'
