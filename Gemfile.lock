@@ -124,6 +124,7 @@ DEPENDENCIES
   capistrano
   compass
   compass-susy-plugin
+  haml
   hirb
   hiredis
   i18n
