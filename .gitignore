@@ -2,5 +2,5 @@
 .sass-cache/**/*
 rspec.sh
 config/deploy.rb
-lib/omniauthdata.rb
+omniauthdata.rb
 environment.rb
