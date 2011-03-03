@@ -12,5 +12,5 @@ javascripts_dir = "public/javascripts"
 # relative_assets = true
 preferred_syntax = :sass
 
-#environment = :production
-#output_style = :compressed
+environment = :production
+output_style = :compressed

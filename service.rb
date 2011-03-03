@@ -9,6 +9,8 @@ require 'haml'
 
 require 'omniauth'
 
+require 'environment'
+
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
 require 'helpers'

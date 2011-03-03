@@ -8,14 +8,10 @@ gem 'i18n'
 gem 'omniauth'
 
 gem 'redis'
-#gem 'hiredis'
+gem 'hiredis'
 gem 'redis-objects'
 
 gem 'rack-flash'
-gem 'sinatra-redirect-with-flash'
-
-gem 'compass'
-gem 'compass-susy-plugin'
 
 group :development do
   gem 'sinatra-reloader'
@@ -24,6 +20,10 @@ group :development do
   #testing
   gem 'rspec'
   #gem 'mocha'
+
+  gem 'compass'
+  gem 'compass-susy-plugin'
+
 
 
   #irb stuff
