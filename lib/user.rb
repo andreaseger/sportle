@@ -6,7 +6,7 @@ class User < Struct.new(:provider, :uid, :name)
   end
   def self.find_by_provider_and_uid(provider,uid)
     if u = Redis::Value.new("#{self}:#{provider}:#{uid}",:marshal => true)
-      new u
+      new  u
     else
       nil
     end

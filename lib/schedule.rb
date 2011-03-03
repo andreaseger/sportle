@@ -128,7 +128,7 @@ class Schedule
 
 #################
 
-  def self.make_slug(body)
+  def self.make_slug(body, created_at)
     # TODO
     body.hash.abs
   end

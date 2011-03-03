@@ -58,7 +58,7 @@
           %li
             %a{:href=>"/tags/#{tag}", :class=>"#{css_class}"}=tag
     %div{:role=>"main"}
-      - [:error, :notice].each do |name|
+      - ['error', 'notice'].each do |name|
         - unless flash[name].nil? 
           %div{:id => "flash_#{name}"}=flash[name]
       = yield

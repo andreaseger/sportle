@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'sinatra/base'
-require 'sinatra/redirect_with_flash'
+#require 'sinatra/redirect_with_flash'
 require "sinatra/reloader"
 
 require 'ostruct'
@@ -17,20 +17,22 @@ require 'omniauthdata'
 
 class Service < Sinatra::Base
   configure do |c|
-    register Sinatra::RedirectWithFlash
+    #register Sinatra::RedirectWithFlash
     helpers Sinatra::MyHelper
 
     set :public, File.dirname(__FILE__) + '/public'
     set :haml, :format => :html5
 
-    use Sinatra::OmniauthData
+    use OmniAuth::Builder do
+        provider :facebook, FB_APP_ID, FB_APP_SECRET , { :scope => 'email, status_update, publish_stream' }
+        provider :twitter, T_APP_ID, T_APP_SECRET
+    end
 
-
-    use Rack::Flash, :sweep => true
     enable :sessions    
+    use Rack::Flash#, :sweep => true
     layout :layout
   end
-
+ 
   configure :development do |c|
     register Sinatra::Reloader
     c.also_reload "lib/*.rb"
@@ -55,8 +57,10 @@ class Service < Sinatra::Base
   end
 
   post '/' do
-    schedule = Schedule.create :body => params[:body], :tags => params[:tags], :created_at => Time.now, :slug => Schedule.make_slug(params[:body])
-    redirect schedule.url#, :notice => "Schedule successfull created"
+    created_at = Time.now
+    schedule = Schedule.create :body => params[:body], :tags => params[:tags], :created_at => created_at, :slug => Schedule.make_slug(params[:body], created_at)
+    flash[:notice] = 'Schedule successfull created'
+    redirect schedule.url
   end
 
   get '/:slug/' do
@@ -88,7 +92,8 @@ class Service < Sinatra::Base
     schedule = Schedule.find_by_slug(params[:slug])
     halt [ 404, "Page not found" ] unless schedule
     schedule.update(params[:body],params[:tags])
-    redirect schedule.url#, :notice => "Schedule successfull updated"
+    flash[:notice] = "Schedule successfull updated"
+    redirect schedule.url
   end
   
   post '/auth/:name/callback' do
@@ -98,18 +103,22 @@ class Service < Sinatra::Base
     if auth['provider'] == 'facebook'
       session[:fb_token] = auth['fb_auth']['credentials']['token']
     end
-    redirect '/'#, :notice => "Signed in!"
+    flash[:notice] = "Signed in!"
+    redirect '/'
   end
   get '/auth/failure' do
     clear_session
-    redirect '/'#, :error => 'In order to use this site you must allow us access to your Facebook data'
+    flash[:error] = 'In order to use this site you must allow us access to your Facebook data'
+    redirect '/'
   end
 
   get '/signout' do
     clear_session
-    redirect '/'#, :notice => "Signed out!"
+    flash[:notice] = "Signed out!"
+    redirect '/'
   end
 
   # start the server if ruby file executed directly
+  app_file = "service.rb"
   run! if app_file == $0
 end
