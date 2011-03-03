@@ -1,6 +1,7 @@
 require 'rubygems'
+require 'environment'
 require 'sinatra/base'
-require "sinatra/reloader" if :development
+require "sinatra/reloader" unless ENV['RACK_ENV'].to_sym == :production
 
 require 'ostruct'
 require 'rack-flash'
@@ -8,8 +9,6 @@ require 'active_support/inflector'
 require 'haml'
 
 require 'omniauth'
-
-require 'environment'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
