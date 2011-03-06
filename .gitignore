@@ -2,5 +2,6 @@
 .sass-cache/**/*
 rspec.sh
 config/deploy.rb
-omniauthdata.rb
+config/newrelic.yml
+omniauthdata.rb*
 environment.rb

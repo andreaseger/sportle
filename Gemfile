@@ -7,6 +7,7 @@ gem 'activesupport'
 gem 'i18n'
 
 gem 'omniauth'
+gem 'openid-redis-store'
 
 gem 'redis'
 gem 'hiredis'
@@ -24,7 +25,7 @@ group :development do
 
   gem 'compass'
   gem 'compass-susy-plugin'
-
+  gem 'json'
 
 
   #irb stuff

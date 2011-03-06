@@ -11,10 +11,17 @@
       %li{:class=>"level#{item.level}"}
         =h item.text
   .controls
-    %a{:href=>"#{schedule.url}edit"}edit
-    |
-    %a{:href=>"", :class => 'uprank'}uprank
-    |
+    - if auth?
+      %a{:href=>"#{schedule.url}/edit"}edit
+      |
+      %a{:href=>"#{schedule.url}/uprank", :class => 'uprank'}uprank
+      |
+      - case session[:provider]
+        - when 'facebook'
+          %script{:src=>"http://connect.facebook.net/en_US/all.js#xfbml=1"}
+          %fb:like{:href=>"#{schedule.url}", :layout=>"button_count", :show_faces=>"false", :width=>"60", :font=>"arial"}
+        - when 'twitter'
+          twitter button
     Score:
   .score
     = schedule.score.to_i

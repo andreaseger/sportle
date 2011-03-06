@@ -8,7 +8,10 @@ require 'rack-flash'
 require 'active_support/inflector'
 require 'haml'
 
+require 'json'
+
 require 'omniauth'
+require 'open_id/store/redis'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
@@ -23,18 +26,41 @@ class Service < Sinatra::Base
     set :haml, :format => :html5
 
     use OmniAuth::Builder do
-        provider :facebook, FB_APP_ID, FB_APP_SECRET , { :scope => 'email, status_update, publish_stream' }
-        provider :twitter, T_APP_ID, T_APP_SECRET
+        provider :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, { :scope => 'email, publish_stream' }
+        provider :twitter, TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET
+        provider :open_id, OpenID::Store::Redis.new($redis)
+        provider :google_apps, OpenID::Store::Redis.new($redis)
+        provider :github, GITHUB_CLIENT_ID, GITHUB_SECRET
     end
 
-    enable :sessions    
-    use Rack::Flash#, :sweep => true
+    enable :sessions
+    use Rack::Flash
     layout :layout
   end
  
   configure :development do |c|
     register Sinatra::Reloader
     c.also_reload "lib/*.rb"
+  end
+  
+  get '/auth/:name/callback' do
+    auth = request.env['omniauth.auth']
+    session[:provider] = auth['provider']
+    session[:uid] = auth['uid']
+    session[:name] = auth['user_info']['name']
+    session[:nickname] = auth['user_info']['nickname']
+    redirect request.env['omniauth.origin'] || '/'
+  end
+  get '/auth/failure' do
+    clear_session
+    flash[:error] = 'In order to use the advanced featues of the site you must allow us access to your Accounts data'
+    redirect '/'
+  end
+
+  get '/signout' do
+    clear_session
+    flash[:notice] = "Signed out!"
+    redirect '/'
   end
 
   get '/' do
@@ -62,7 +88,7 @@ class Service < Sinatra::Base
     redirect schedule.url
   end
 
-  get '/:slug/' do
+  get '/:slug' do
     cache_page
     schedule = Schedule.find_by_slug(params[:slug])
     items = Parser.parseSchedule(schedule.body, true)
@@ -87,34 +113,12 @@ class Service < Sinatra::Base
     haml :edit, :locals => { :schedule => schedule, :url => schedule.url }
   end
 
-  post '/:slug/' do
+  post '/:slug' do
     schedule = Schedule.find_by_slug(params[:slug])
     halt [ 404, "Page not found" ] unless schedule
     schedule.update(params[:body],params[:tags])
     flash[:notice] = "Schedule successfull updated"
     redirect schedule.url
-  end
-  
-  post '/auth/:name/callback' do
-    auth = request.env['omniauth.auth']
-    user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.new(auth)
-    session[:user_key] = user.key
-    if auth['provider'] == 'facebook'
-      session[:fb_token] = auth['fb_auth']['credentials']['token']
-    end
-    flash[:notice] = "Signed in!"
-    redirect '/'
-  end
-  get '/auth/failure' do
-    clear_session
-    flash[:error] = 'In order to use this site you must allow us access to your Facebook data'
-    redirect '/'
-  end
-
-  get '/signout' do
-    clear_session
-    flash[:notice] = "Signed out!"
-    redirect '/'
   end
 
   # start the server if ruby file executed directly

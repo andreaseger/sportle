@@ -39,8 +39,24 @@ a
   ul
     +no-bullets
   #tagcloud
-    +tag-cloud
-  
+    +columns(2,3)
+    +omega
+    +tag-cloud(10px)
+    margin: 10px 0
+    a
+      float: left
+      margin: 2px
+  #auth
+    .auth_provider
+      +adjust-font-size-to(11px)
+      float: right
+      text-decoration: none
+      margin: 2px 10px
+      text-align: center
+      width: 54px
+      img
+        display: block
+        margin: auto
 
 div[role="main"]
   +columns(9)
@@ -61,6 +77,7 @@ div[role="main"]
     .controls
       float: left
       padding-right: .4em
+      
     .items
       +no-bullets
       +adjust-font-size-to(18px)
@@ -72,6 +89,12 @@ div[role="main"]
 footer
   +full
   +pad(3,3)
+
+.clear
+  clear: both
+  height: 0
+  overflow: hidden
+
 
 
 @media all and (orientation:portrait)

@@ -1,6 +1,7 @@
 $(function () {
   $('.uprank').live('click', function(e){
-    $.post('uprank', function(data) {
+  	url = $('.uprank')[0].href
+    $.post( url, function(data) {
       $('.score').html(data);
     });
     e.preventDefault();

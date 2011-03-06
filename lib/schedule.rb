@@ -81,14 +81,14 @@ class Schedule
     self.body = new_body.gsub(/\r\n/,"\r")
     self.full_distance = tmp[:full_distance]
     self.items = tmp[:items]
-    
+
     at = self.tags.split
     self.tags = self.class.chop_crap(new_tags)
     nt = self.tags.split
 
     (nt-at).each {|tag| add_tag(tag)}
     (at-nt).each {|tag| rem_tag(tag)}
-    
+
     self.save
   end
 
@@ -134,7 +134,7 @@ class Schedule
   end
   
   def url
-    "/#{slug}/"
+    "/#{slug}"
   end
   
   def linked_tags

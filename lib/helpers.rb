@@ -48,15 +48,14 @@ module Sinatra
 END
     end
     def clear_session
-      session[:user_key] = nil
-      session[:fb_token] = nil
-      session[:fb_error] = nil
+      session[:provider] = nil
+      session[:uid] = nil
+      session[:name] = nil
+      session[:nickname] = nil
     end
 
-    def user
-      if session[:user_key]
-        @user = User.find_by_key(session[:user_key]) unless @user
-      end
+    def auth?
+      %w(facebook twitter open-id github google-app).include?(session[:provider]) && session[:uid] != nil
     end
   end
 end
