@@ -67,10 +67,15 @@ class Schedule
     find_range(0,9999)
   end
 
-  def self.create(params)
+  def self.build(params)
     params[:tags] = chop_crap(params[:tags])
     schedule = new(params.merge(Parser.parseSchedule(params[:body])))
     schedule.body.gsub!(/\r\n/,"\r") 
+    schedule
+  end
+
+  def self.create(params)
+    schedule = build(params)
     schedule.save
     schedule.build_indexes
     schedule

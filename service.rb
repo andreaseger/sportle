@@ -7,6 +7,7 @@ require 'ostruct'
 require 'rack-flash'
 require 'net/http'
 require 'rack/recaptcha'
+require 'pony'
 
 require 'active_support/inflector'
 require 'haml'
@@ -22,9 +23,17 @@ class Service < Sinatra::Base
     set :public, File.dirname(__FILE__) + '/public'
     set :haml, :format => :html5
 
-    use Rack::Recaptcha, :public_key => ENV['ReCaptchaPublicKey'], :private_key => ENV['ReCaptchaPrivateKey'], :paths => '/send_schedule'
+    use Rack::Recaptcha, :public_key => ENV['ReCaptchaPublicKey'], :private_key => ENV['ReCaptchaPrivateKey']#, :paths => '/send_schedule'
     helpers Rack::Recaptcha::Helpers
-
+  Pony.options ={:to => ENV['MAIL_TO'], :from=>ENV['MAIL_FORM'], :via => :smtp, :via_options => {
+      :address              => 'smtp.gmail.com',
+      :port                 => '587',
+      :enable_starttls_auto => true,
+      :user_name            => ENV['MAIL_USER'],
+      :password             => ENV['MAIL_PASSWORD'],
+      :authentication       => :plain,
+      :domain               => "localhost.localdomain"
+    }}
     enable :sessions
     use Rack::Flash
     layout :layout
@@ -61,14 +70,19 @@ class Service < Sinatra::Base
   end
 
   get '/send_schedule' do
-    haml :send_schedule
+    haml :send_schedule, :locals => { :schedule => Schedule.new, :mail => ''}
   end
 
   post '/send_schedule' do
+    created_at = Time.now
+    schedule = Schedule.build :body => params[:body], :tags => params[:tags], :created_at => created_at, :slug => Schedule.make_slug(params[:body], created_at)
     if recaptcha_valid?
-      request.env['recaptcha.msg']
+      flash[:error] = reCaptcha invalid!
+      haml :send_schedule, :locals => { :schedule => schedule, :mail => params[:mail]}
     else
-      request.env.to_json
+      Pony.mail(:subject => schedule.tags, :body => "#{params[:mail]}\n#{schedule.body}")
+      flash[:notice] = 'email sent'
+      redirect '/'
     end
   end
   get '/:slug' do

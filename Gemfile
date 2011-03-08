@@ -14,6 +14,8 @@ gem 'redis-objects'
 gem 'rack-flash'
 gem 'rack-recaptcha'
 
+gem 'pony'
+
 group :development do
   gem 'sinatra-reloader'
   gem 'capistrano'

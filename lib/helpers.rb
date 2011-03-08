@@ -29,6 +29,7 @@ module Sinatra
     
     def tag_cloud(classes)
       tags = Schedule.get_tags
+      return if tags.empty?
       max_count = tags.sort_by{|t| t[1] }.last[1]
 
       tags.each do |tag|

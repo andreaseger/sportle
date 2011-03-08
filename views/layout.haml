@@ -45,11 +45,13 @@
         %ul
           - if auth?
             %li
-              %a(href="/new")new schedule
+              %a{:href=>"/new"}new schedule
           %li
-            %a(href="/")show all
+            %a{:href=>"/send_schedule"}send schedule
+          %li
+            %a{:href=>"/"}show all
       #tagcloud
-        -# tag_cloud %w(xxs xs s l xl xxl) do |tag, css_class|
+        - tag_cloud %w(xxs xs s l xl xxl) do |tag, css_class|
           %a{:href=>"/tags/#{tag}", :class=>"#{css_class}"}=tag
     %div{:role=>"main"}
       - ['error', 'notice'].each do |name|
