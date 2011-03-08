@@ -5,18 +5,15 @@ require "sinatra/reloader" unless ENV['RACK_ENV'].to_sym == :production
 
 require 'ostruct'
 require 'rack-flash'
+require 'net/http'
+require 'rack/recaptcha'
+
 require 'active_support/inflector'
 require 'haml'
-
-require 'json'
-
-require 'omniauth'
-require 'open_id/store/redis'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'all'
 require 'helpers'
-require 'omniauthdata'
 
 class Service < Sinatra::Base
   configure do |c|
@@ -25,13 +22,8 @@ class Service < Sinatra::Base
     set :public, File.dirname(__FILE__) + '/public'
     set :haml, :format => :html5
 
-    use OmniAuth::Builder do
-        provider :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, { :scope => 'email, publish_stream' }
-        provider :twitter, TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET
-        provider :open_id, OpenID::Store::Redis.new($redis)
-        provider :google_apps, OpenID::Store::Redis.new($redis)
-        provider :github, GITHUB_CLIENT_ID, GITHUB_SECRET
-    end
+    use Rack::Recaptcha, :public_key => ENV['ReCaptchaPublicKey'], :private_key => ENV['ReCaptchaPrivateKey'], :paths => '/send_schedule'
+    helpers Rack::Recaptcha::Helpers
 
     enable :sessions
     use Rack::Flash
@@ -41,26 +33,6 @@ class Service < Sinatra::Base
   configure :development do |c|
     register Sinatra::Reloader
     c.also_reload "lib/*.rb"
-  end
-  
-  get '/auth/:name/callback' do
-    auth = request.env['omniauth.auth']
-    session[:provider] = auth['provider']
-    session[:uid] = auth['uid']
-    session[:name] = auth['user_info']['name']
-    session[:nickname] = auth['user_info']['nickname']
-    redirect request.env['omniauth.origin'] || '/'
-  end
-  get '/auth/failure' do
-    clear_session
-    flash[:error] = 'In order to use the advanced featues of the site you must allow us access to your Accounts data'
-    redirect '/'
-  end
-
-  get '/signout' do
-    clear_session
-    flash[:notice] = "Signed out!"
-    redirect '/'
   end
 
   get '/' do
@@ -88,6 +60,17 @@ class Service < Sinatra::Base
     redirect schedule.url
   end
 
+  get '/send_schedule' do
+    haml :send_schedule
+  end
+
+  post '/send_schedule' do
+    if recaptcha_valid?
+      request.env['recaptcha.msg']
+    else
+      request.env.to_json
+    end
+  end
   get '/:slug' do
     cache_page
     schedule = Schedule.find_by_slug(params[:slug])

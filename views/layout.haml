@@ -48,30 +48,8 @@
               %a(href="/new")new schedule
           %li
             %a(href="/")show all
-      - if auth?
-        %p
-          = "Hello #{session[:name]}"
-          %a{:href=>"/signout"} Logout
-      -else
-        #auth
-          %a{:href=>"/auth/twitter", :class=>"auth_provider"}
-            Twitter
-            %img{:src=>"/images/twitter_32.png", :size => "32x32", :alt => "Twitter"}
-          %a{:href=>"/auth/facebook", :class=>"auth_provider"}
-            Facebook
-            %img{:src=>"/images/facebook_32.png", :size => "32x32", :alt => "Facebook"}
-          %a{:href=>"/auth/github", :class=>"auth_provider"}
-            Github
-            %img{:src=>"/images/github_32.png", :size => "32x32", :alt => "Github"}
-          %a{:href=>"/auth/google_apps", :class=>"auth_provider"}
-            Google
-            %img{:src=>"/images/google_32.png", :size => "32x32", :alt => "Google"}
-          %a{:href=>"/auth/open_id", :class=>"auth_provider"}
-            OpenID
-            %img{:src=>"/images/openid_32.png", :size => "32x32", :alt => "OpenID"}
-        .clear
       #tagcloud
-        - tag_cloud %w(xxs xs s l xl xxl) do |tag, css_class|
+        -# tag_cloud %w(xxs xs s l xl xxl) do |tag, css_class|
           %a{:href=>"/tags/#{tag}", :class=>"#{css_class}"}=tag
     %div{:role=>"main"}
       - ['error', 'notice'].each do |name|

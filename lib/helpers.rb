@@ -47,15 +47,9 @@ module Sinatra
   %input{:value => '#{name}', :type => 'submit'}
 END
     end
-    def clear_session
-      session[:provider] = nil
-      session[:uid] = nil
-      session[:name] = nil
-      session[:nickname] = nil
-    end
 
     def auth?
-      %w(facebook twitter open-id github google-app).include?(session[:provider]) && session[:uid] != nil
+      true
     end
   end
 end

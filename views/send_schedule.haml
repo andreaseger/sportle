@@ -1,0 +1,9 @@
+- title 'Send in your schedule'
+-#
+  %label{:name=>"tags"}Tags
+  %input{:type => "text", :name => "tags"}
+  %label{:name=>"tags"}Schedule
+  %textarea{:name => "body"}
+%form{:method=>"post", :action=>"/send_schedule"}
+  = recaptcha_tag(:challenge)
+  %input{:type=>'submit', :value => 'Send'}
