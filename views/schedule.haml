@@ -5,7 +5,9 @@
   %small
     .tags= schedule.linked_tags
     = schedule.created_at.strftime '%d.%m.%y | %H:%M'
-      
+    %br
+    = schedule.author
+    = "(#{schedule.email})"
   %ul.items.mono
     -for item in items
       %li{:class=>"level#{item.level}"}

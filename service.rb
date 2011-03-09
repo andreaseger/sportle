@@ -57,13 +57,24 @@ class Service < Sinatra::Base
   end
 
   get '/new' do
-    cache_page
-    haml :edit, :locals => { :schedule => Schedule.new, :url => '/' }
+    if params[:body]
+      schedule = Schedule.new(:body => params[:body].gsub("$$","\r"),
+                              :tags => params[:tags],
+                              :author => params[:author],
+                              :email => params[:email])
+    end
+    schedule ||= Schedule.new
+    haml :edit, :locals => { :schedule => schedule, :url => '/' }
   end
 
   post '/' do
     created_at = Time.now
-    schedule = Schedule.create :body => params[:body], :tags => params[:tags], :created_at => created_at, :slug => Schedule.make_slug(params[:body], created_at)
+    schedule = Schedule.create  :body => params[:body],
+                                :tags => params[:tags],
+                                :author => params[:author],
+                                :email => params[:email],
+                                :created_at => created_at,
+                                :slug => Schedule.make_slug(params[:body], created_at)
     flash[:notice] = 'Schedule successfull created'
     redirect schedule.url
   end
@@ -74,15 +85,17 @@ class Service < Sinatra::Base
 
   post '/send_schedule' do
     created_at = Time.now
-    schedule = Schedule.build :body => params[:body], :tags => params[:tags]
+    schedule = Schedule.build(:body => params[:body],
+                        :tags => params[:tags],
+                        :author => params[:author],
+                        :email => params[:email])
     if captcha_valid?(params[:recaptcha_challenge_field], params[:recaptcha_response_field])
-      #Pony.mail :subject => "sportle#{schedule.tags}", :body => "#{params[:mail]}\n#{schedule.body}"
-      flash.now[:notice] = 'passed!'
+      Pony.mail :subject => "sportle: #{schedule.tags} | #{schedule.full_distance}", :html_body => haml(:mail, :layout => false, :locals => { :schedule => schedule}), body => schedule.to_json
+      flash.now[:notice] = 'your mail got send'
       redirect '/'
     else
-      #flash.now[:error] = request.env['recaptcha.msg']
-      #haml :send_schedule, :locals => { :schedule => schedule, :mail => params[:mail]}
-      request.env.to_json
+      flash.now[:error] = request.env['recaptcha.msg']
+      haml :send_schedule, :locals => { :schedule => schedule}
     end
   end
 

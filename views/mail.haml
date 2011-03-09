@@ -1,0 +1,8 @@
+Preview:
+%br
+.schedule
+  %h2.sans
+    = "#{schedule.full_distance}m"
+  %pre
+    = schedule.body
+%a{:href=>"http://lvh.me:4567/new?body=#{schedule.body.gsub(/\r/,"$$")}&author=#{schedule.author}&email=#{schedule.email}&tags=#{schedule.tags}"}create

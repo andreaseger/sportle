@@ -9,6 +9,7 @@ module Sinatra
       RECAPTCHA_URL = "http://www.google.com/recaptcha/api/verify"
       
       def captcha_valid?(challenge, response, private_key = Sinatra::Plugins::Recaptcha::RECAPTCHA_PRIVATE)
+        return true if :development
         begin
           res = Net::HTTP.post_form(URI.parse(RECAPTCHA_URL), { :privatekey => private_key, :remoteip => request.env["REMOTE_ADDR"], :challenge => challenge, :response => response }) if (!challenge.empty? || !response.empty?)
           res.body.index("true") == 0
