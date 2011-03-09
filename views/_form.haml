@@ -1,0 +1,12 @@
+%form{:action => "#{url}", :method => "post", :id => "schedule_form"}
+  %label{:name=>"tags"}Tags
+  %input{:type => "text", :name => "tags", :value => "#{schedule.tags}"}
+  %label{:name=>"tags"}Schedule
+  %textarea{:name => "body", :value => "#{schedule.body}"}
+  %label{:name=>"email"}Email
+  %input{:type=>"text", :name=>'email', :value => "#{schedule.email}"}
+  %label{:name=>"author"}Author
+  %input{:type=>"text", :name=>'author', :value => "#{schedule.author}"}
+  -if captcha
+    = show_captcha
+  %input{:type=>'submit', :value => 'Send'}

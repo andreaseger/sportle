@@ -1,6 +1,2 @@
-- title 'Create/Edit Schedule', false
-%form{:action => "#{url}", :method => "post", :name => "edit", :id => "schedule_edit"}
-  %input{:type => "text", :name => "tags", :value => "#{schedule.tags}"}
-  %textarea{:name => "body"}
-    = schedule.body
-  %input{:type => "submit", :value => 'Save'}
+- title 'Create/Edit'
+= haml :_form, :layout => false, :locals => {:schedule => schedule, :captcha => false, :url => url}

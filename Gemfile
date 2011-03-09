@@ -1,5 +1,4 @@
 source "http://rubygems.org"
-source "http://gems.github.com"
 
 gem 'sinatra'
 gem 'haml'
@@ -12,7 +11,6 @@ gem 'hiredis'
 gem 'redis-objects'
 
 gem 'rack-flash'
-gem 'rack-recaptcha'
 
 gem 'pony'
 

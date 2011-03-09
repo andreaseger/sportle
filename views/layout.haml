@@ -8,8 +8,8 @@
 %head
   %meta{:charset=>"utf-8"}
 
-  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-  Remove this if you use the .htaccess -->
+  -# Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+  -# Remove this if you use the .htaccess 
   -#%meta{:"http-equiv"=>"X-UA-Compatible", :content=>"IE=edge,chrome=1"}
 
   %title
@@ -17,29 +17,25 @@
   %meta{:name=>"description", :content=>"Sinatra app to store and share swim schedules"}
   %meta{:name=>"author", :content=>"sch1zo"}
 
-  <!--  Mobile viewport optimized: j.mp/bplateviewport -->
+  -# Mobile viewport optimized: j.mp/bplateviewport 
   %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1.0"}
 
-  <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  -# Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references
   %link{:rel=>"shortcut icon", :href=>"/favicon.ico"}
   %link{:rel=>"apple-touch-icon", :href=>"/apple-touch-icon.png"}
 
-
-  <!-- CSS : implied media="all" -->
+  -# CSS : implied media="all"
   %link{:rel=>"stylesheet", :href=>"/css/screen.css"}
 
-  <!-- Uncomment if you are specifically targeting less enabled mobile browsers
-  <link rel="stylesheet" media="handheld" href="css/handheld.css?v=2">  -->
+  -# Uncomment if you are specifically targeting less enabled mobile browsers
+  -#<link rel="stylesheet" media="handheld" href="css/handheld.css?v=2">
  
-  <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects  -->
+  -#<!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects  -->
   %script{:src=>"/js/modernizr-1.7.min.js"}
 
 
 %body
   #container
-    %header
-      - if show_title?
-        %h1= section(:title)
     #sidebar
       %nav
         %ul
@@ -54,6 +50,8 @@
         - tag_cloud %w(xxs xs s l xl xxl) do |tag, css_class|
           %a{:href=>"/tags/#{tag}", :class=>"#{css_class}"}=tag
     %div{:role=>"main"}
+      - if show_title?
+        %h1= section(:title)
       - ['error', 'notice'].each do |name|
         - unless flash[name].nil? 
           %div{:id => "flash_#{name}"}=flash[name]
@@ -63,9 +61,3 @@
       sch1zo | Source at
       %a{:rel=>"source", :href=>"https://github.com/sch1zo/schedule-db-redis"}
         GitHub
-  <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-  %script{:src=>"//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"}
-  %script
-    :plain
-      !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.5.1.min.js"%3E%3C/script%3E'))
-  %script{:src=>"/js/script.js"}

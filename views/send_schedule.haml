@@ -1,11 +1,2 @@
 - title 'Send in your schedule'
-%form{:method=>"post", :action=>"/send_schedule"}
-  %label{:name=>"tags"}Tags
-  %input{:type => "text", :name => "tags", :value => "#{schedule.tags}"}
-  %label{:name=>"tags"}Schedule
-  %textarea{:name => "body"}
-    = schedule.body
-  %label{:name=>"email"}Email
-  %input{:type=>"text", :name=>'mail', :value => "#{mail}"}
-  = recaptcha_tag(:challenge)
-  %input{:type=>'submit', :value => 'Send'}
+= haml :_form, :layout => false, :locals => {:schedule => schedule, :captcha => true, :url => url}

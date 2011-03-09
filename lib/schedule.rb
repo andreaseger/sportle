@@ -1,6 +1,6 @@
 class Schedule
   def self.attrs
-    [ :slug, :body, :tags, :items, :full_distance, :created_at]
+    [ :slug, :body, :tags, :items, :full_distance, :created_at, :email, :author]
   end
 
   def attrs
@@ -70,7 +70,7 @@ class Schedule
   def self.build(params)
     params[:tags] = chop_crap(params[:tags])
     schedule = new(params.merge(Parser.parseSchedule(params[:body])))
-    schedule.body.gsub!(/\r\n/,"\r") 
+    schedule.body.gsub!(/\r\n/,"\r")
     schedule
   end
 

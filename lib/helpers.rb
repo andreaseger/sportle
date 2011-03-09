@@ -1,4 +1,3 @@
-require 'sinatra/base'
 module Sinatra
   module MyHelper
     def pluralize(number, text)
