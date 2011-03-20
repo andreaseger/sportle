@@ -1,25 +1,10 @@
-class Schedule
+class Schedule < RedisClass
   def self.attrs
     [ :slug, :body, :tags, :items, :full_distance, :created_at, :email, :author]
   end
 
-  def attrs
-    self.class.attrs.inject({}) do |a, key|
-      a[key] = send(key)
-      a
-    end
-  end
-
-  attr_accessor *attrs
-
   def created_at=(t)
     @created_at = t.is_a?(Time) ? t : Time.parse(t)
-  end
-
-  def initialize(params={})
-    params.each do |key, value|
-      send("#{key}=", value)
-    end
   end
 
 #################
@@ -98,11 +83,6 @@ class Schedule
   end
 
 #################
-
-  def save
-    obj = Redis::Value.new(db_key, :marshal => true)
-    obj.value = attrs
-  end
   
   def build_indexes
     Redis::SortedSet.new(self.class.ranked_key)[slug] = 0

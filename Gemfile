@@ -7,7 +7,7 @@ gem 'activesupport'
 gem 'i18n'
 
 gem 'redis'
-gem 'hiredis'
+#gem 'hiredis'
 gem 'redis-objects'
 
 gem 'rack-flash'
